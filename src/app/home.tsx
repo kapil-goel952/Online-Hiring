@@ -1,73 +1,107 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { router } from "expo-router";
+
 import { colors } from "../constants/color";
 import { services, workers } from "../constants/data";
 import PrimaryButton from "../components/PrimaryButton";
 import ServiceCard from "../components/ServiceCard";
 import WorkerCard from "../components/WorkerCard";
+import BottomTabs from "../components/BottomTabs";
 
 export default function HomeScreen() {
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={styles.header}>
-        <Text style={styles.logo}>
-          Kaam<Text style={styles.logoOrange}>Karo</Text>
-        </Text>
-        <Text style={styles.location}>Noida Sector 62</Text>
-      </View>
-
-      <View style={styles.hero}>
-        <Text style={styles.heroTitle}>Ghar ka kaam? Tension nahi.</Text>
-        <Text style={styles.heroText}>
-          Find trusted workers near you for home services.
-        </Text>
-
-        <TextInput
-          style={styles.search}
-          placeholder="Search for a service..."
-          placeholderTextColor={colors.muted}
-        />
-
-        <View style={styles.buttonRow}>
-          <PrimaryButton title="Find Worker" onPress={() => router.push("/services")} />
-          <PrimaryButton title="Join Worker" variant="outline" onPress={() => {}} />
+    <SafeAreaView style={styles.page}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.header}>
+          <Text style={styles.logo}>
+            Kaam<Text style={styles.logoOrange}>Karo</Text>
+          </Text>
+          <Text style={styles.location}>Noida Sector 62</Text>
         </View>
-      </View>
 
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Popular Services</Text>
-        <Text style={styles.seeAll} onPress={() => router.push("/services")}>
-          See All
-        </Text>
-      </View>
+        <View style={styles.hero}>
+          <Text style={styles.heroTitle}>Ghar ka kaam? Tension nahi.</Text>
+          <Text style={styles.heroText}>
+            Find trusted workers near you for home services.
+          </Text>
 
-      <View style={styles.serviceGrid}>
-        {services.map((item) => (
-          <ServiceCard key={item.id} service={item} onPress={() => router.push("/workers")} />
+          <TextInput
+            style={styles.search}
+            placeholder="Search for a service..."
+            placeholderTextColor={colors.muted}
+          />
+
+          <View style={styles.buttonRow}>
+            <View style={styles.buttonItem}>
+              <PrimaryButton
+                title="Find Worker"
+                onPress={() => router.push("/services")}
+              />
+            </View>
+
+            <View style={styles.buttonItem}>
+              <PrimaryButton
+                title="Join Worker"
+                variant="outline"
+                onPress={() => {}}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Popular Services</Text>
+          <Text style={styles.seeAll} onPress={() => router.push("/services")}>
+            See All
+          </Text>
+        </View>
+
+        <View style={styles.serviceGrid}>
+          {services.map((item) => (
+            <ServiceCard
+              key={item.id}
+              service={item}
+              onPress={() => router.push("/workers")}
+            />
+          ))}
+        </View>
+
+        <Text style={styles.sectionTitle}>Top Workers</Text>
+
+        {workers.map((worker) => (
+          <WorkerCard
+            key={worker.id}
+            worker={worker}
+            onPress={() => router.push("/worker-profile")}
+          />
         ))}
-      </View>
+      </ScrollView>
 
-      <Text style={styles.sectionTitle}>Top Workers</Text>
-
-      {workers.map((worker) => (
-        <WorkerCard
-          key={worker.id}
-          worker={worker}
-          onPress={() => router.push("/worker-profile")}
-        />
-      ))}
-    </ScrollView>
+      <BottomTabs activeTab="Home" />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  page: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+  content: {
     padding: 20,
+    paddingBottom: 24,
   },
   header: {
-    marginTop: 20,
     marginBottom: 18,
   },
   logo: {
@@ -84,7 +118,7 @@ const styles = StyleSheet.create({
   },
   hero: {
     backgroundColor: colors.white,
-    borderRadius: 18,
+    borderRadius: 12,
     padding: 18,
     marginBottom: 24,
   },
@@ -101,7 +135,7 @@ const styles = StyleSheet.create({
   search: {
     marginTop: 16,
     backgroundColor: colors.background,
-    borderRadius: 12,
+    borderRadius: 8,
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderWidth: 1,
@@ -109,8 +143,10 @@ const styles = StyleSheet.create({
   },
   buttonRow: {
     flexDirection: "row",
-    gap: 12,
     marginTop: 16,
+  },
+  buttonItem: {
+    flex: 1,
   },
   sectionHeader: {
     flexDirection: "row",
@@ -126,11 +162,12 @@ const styles = StyleSheet.create({
   seeAll: {
     color: colors.primary,
     fontWeight: "700",
+    marginBottom: 14,
   },
   serviceGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 12,
+    justifyContent: "space-between",
     marginBottom: 24,
   },
 });

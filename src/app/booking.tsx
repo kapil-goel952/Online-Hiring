@@ -28,17 +28,24 @@ export default function BookingScreen() {
       return;
     }
 
-    Alert.alert(
-      "Request Sent",
-      `Your booking request has been sent to ${worker.name}.`,
-      [{ text: "OK", onPress: () => router.replace("/") }]
-    );
+    // Alert.alert(
+    //   "Request Sent",
+    //   `Your booking request has been sent to ${worker.name}.`,
+    //   [{ text: "OK", onPress: () => router.replace("/") }]
+    // );
+    router.replace("/booking-success");
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
+        <Pressable onPress={() => {
+  if (router.canGoBack()) {
+    router.back();
+  } else {
+    router.replace("/home");
+  }
+}} style={styles.backButton}>
           <Text style={styles.backText}>{"<"}</Text>
         </Pressable>
 
